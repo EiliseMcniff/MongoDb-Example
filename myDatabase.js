@@ -1,3 +1,6 @@
+var mongoose = require('mongoose');
+var User = require('./models/Info.js');
+mongoose.connect('mongodb://localhost/mongooseExample');
 
 let myDatabase = function() {
 	this.infoList = [];
@@ -8,56 +11,73 @@ myDatabase.prototype.getArraySize = function() {
 }
 
 //add or modify.  Complete getAllObjects function.
-myDatabase.prototype.getAllObjects = function() {
-	let objs = [];
-	for (let i=0;i<this.infoList.length;i++) {
-		if (this.infoList[i]) {
-			objs.push(this.infoList[i]);
+myDatabase.prototype.getAllObjects = function(res) {
+	User.find({},function(error,info) {
+		if (error) {
+			res.json(null);
+		} else {
+			let objs = [];
+			for (let i=0;i<info.length;i++) {
+			  objs.push({ident:info[i].ident,name:info[i].name});
+			}
+			res.json(objs);
 		}
-	}
-	return(objs);
+	});
 }
 
-myDatabase.prototype.getObjectWithID = function(ident) {
-	for (let i=0;i<this.infoList.length;i++) {
-		if (this.infoList[i] && ident == this.infoList[i].ident)
-			return (this.infoList[i]);
-	}
-	return (null);
+myDatabase.prototype.getObjectWithID = function(res,ident) {
+	User.find({ident:ident},function(error,info) {
+			if (error) {
+					res.json (null);
+			}
+			else if (info == null) {
+					res.json (null);
+			}
+			if (info.length == 1)
+			{
+				res.json({ name: info[0].name });
+			}
+			else
+			{
+					res.json (null);
+			}
+	 });
+
 }
 
-myDatabase.prototype.addObject = function(obj) {
-	for (let i=0;i<this.infoList.length;i++) {
-		if (this.infoList[i] && obj.ident == this.infoList[i].ident)
-			return (null);
-	}
-	this.infoList.push(obj);
-	return (obj);
+myDatabase.prototype.addObject = function(res,obj) {
+	User.create(obj,function(error,info) {
+			if (error) {
+					 res.json(null);
+			}
+			let object = {ident:obj.ident,name:obj.name};
+			res.json(object);
+	});
 }
 
 
 //add or modify.  Complete changeObject function.
-myDatabase.prototype.changeObject = function(obj) {
-	for (let i=0;i<this.infoList.length;i++) {
-		if (this.infoList[i] && obj.ident == this.infoList[i].ident) {
-			this.infoList[i] = obj;
-			return (obj);
-		}
-	}
-	return (null);
+myDatabase.prototype.changeObject = function(res,ident,name) {
+	User.findOneAndUpdate({ident:ident},{name:name},function(error,info) {
+	          if (error) {
+	               res.json(null);
+	          }
+	          else if (info == null) {
+	               res.json(null);
+	          }
+	           res.json(req.body);
+	      });
 }
 
 
 //add or modify.  Complete deleteObjectWithID function.
-myDatabase.prototype.deleteObjectWithID = function(ident) {
-	for (let i=0;i<this.infoList.length;i++) {
-		if (this.infoList[i] && ident == this.infoList[i].ident) {
-			let temp = this.infoList[i];
-			this.infoList[i] = undefined;
-			return (temp);
-		}
-	}	
-	return (null);
+myDatabase.prototype.deleteObjectWithID = function(res,ident) {
+	Info.remove({ident:ident},function(error,removed) {
+			if (error) {
+					 res.json(null);
+			}
+			 res.json(removed.result);
+	});
 }
 
 

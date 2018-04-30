@@ -4,7 +4,6 @@ var bodyParser = require('body-parser');
 var mongoose = require("mongoose");
 var Info = require("./models/Info");
 
-mongoose.connect("mongodb://localhost/infodb");
 
 
 var routes = require("./routes");
@@ -19,6 +18,3 @@ app.use(routes);
 
 var port = process.env.PORT || 3000;
 app.listen(port);
-
-
-

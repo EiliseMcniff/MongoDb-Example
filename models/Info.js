@@ -2,7 +2,7 @@
 
 var mongoose = require("mongoose");
 
-var Info = mongoose.model("Info",{
+var userSchema =  mongoose.Schema({
 	ident: {
 		required: true,
 		unique: true,
@@ -11,7 +11,6 @@ var Info = mongoose.model("Info",{
 	name: String
 });
 
-module.exports = Info;
+var User = mongoose.model('User', userSchema);
 
-
-
+module.exports = User;
