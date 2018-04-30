@@ -1,7 +1,7 @@
 
 var express = require("express");
-var mongoose = require("mongoose");
-var Info = require("./models/Info");
+
+
 
 var router = express.Router();
 

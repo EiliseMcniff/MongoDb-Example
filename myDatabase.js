@@ -50,8 +50,8 @@ myDatabase.prototype.addObject = function(res,obj) {
 			if (error) {
 					 res.json(null);
 			}
-			let object = {ident:obj.ident,name:obj.name};
-			res.json(object);
+
+			res.json(info);
 	});
 }
 
@@ -65,7 +65,7 @@ myDatabase.prototype.changeObject = function(res,ident,name) {
 	          else if (info == null) {
 	               res.json(null);
 	          }
-	           res.json(req.body);
+	           res.json(info);
 	      });
 }
 
