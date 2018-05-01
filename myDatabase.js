@@ -72,7 +72,7 @@ myDatabase.prototype.changeObject = function(res,ident,name) {
 
 //add or modify.  Complete deleteObjectWithID function.
 myDatabase.prototype.deleteObjectWithID = function(res,ident) {
-	Info.remove({ident:ident},function(error,removed) {
+	User.remove({ident:ident},function(error,removed) {
 			if (error) {
 					 res.json(null);
 			}
